@@ -4,14 +4,9 @@ import { useEffect, useState } from 'react';
 
 const UserTable = () => {
 
-    const [dataUsers, setDataUsers] = useState([
-        { _id: "hui", fullName: "Eric", email: "eric@gmail.com" },
-        { _id: "hu1i", fullName: "Eric", email: "eric4@gmail.com" },
-        { _id: "h2ui", fullName: "Hoidanit", email: "eri2c@gmail.com" }
-    ]);
+    const [dataUsers, setDataUsers] = useState([]);
 
     useEffect(() => {
-        console.log(">>>> run useEffect 1111")
         loadUser();
     }, []);
 
@@ -34,8 +29,6 @@ const UserTable = () => {
         const res = await fetchAllUserAPI()
         setDataUsers(res.data)
     }
-
-    console.log(">>>>>>> run render 0000")
 
     return (
         <Table
