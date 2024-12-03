@@ -43,7 +43,7 @@ const UpdateUserModal = (props) => {
         setDataUpdate(null)
     }
 
-    console.log(">>> check data update props: ", dataUpdate);
+    // console.log(">>> check data update props: ", dataUpdate);
     return (
         <Modal
             title="Update a User"

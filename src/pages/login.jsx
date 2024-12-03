@@ -1,32 +1,33 @@
-import { Button, Input, Form, notification, Row, Col, Divider } from "antd";
-import { registerUserAPI } from "../services/api.service";
-import { Link } from "react-router-dom";
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Row, Col, Divider, message, notification } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { loginAPI } from "../services/api.service";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/context/auth.context";
 
 const LoginPage = () => {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext);
 
     const onFinish = async (values) => {
-        console.log(">>>> check value: ", values)
-        //cal api
-        // const res = await registerUserAPI(
-        //     values.fullName,
-        //     values.email,
-        //     values.password,
-        //     values.phone)
-        // if (res.data) {
-        //     notification.success({
-        //         message: "Register user",
-        //         description: "Đăng ký user thành công"
-        //     })
-        //     navigate("/login");
-        // } else {
-        //     notification.error({
-        //         message: "Error Register user",
-        //         description: JSON.stringify(res.message)
-        //     })
-        // }
+        setLoading(true)
+        const res = await loginAPI(values.email, values.password);
+        if (res.data) {
+            message.success("Đăng nhập thành công");
+            localStorage.setItem("access_token", res.data.access_token);
+            setUser(res.data.user);
+            navigate("/");
+        } else {
+            notification.error({
+                message: "Error Login",
+                description: JSON.stringify(res.message)
+            })
+        }
+        setLoading(false)
     }
+
     return (
         <Row justify={"center"} style={{ marginTop: "30px" }}>
             <Col xs={24} md={16} lg={8}>
@@ -41,8 +42,6 @@ const LoginPage = () => {
                         form={form}
                         layout="vertical"
                         onFinish={onFinish}
-                        style={{ margin: "20px" }}
-                    // onFinishFailed={onFinishFailed}
                     >
                         <Form.Item
                             label="Email"
@@ -71,25 +70,34 @@ const LoginPage = () => {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password onKeyDown={(event) => {
+                                if (event.key === 'Enter') form.submit()
+                            }} />
                         </Form.Item>
 
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                        }}>
-                            <Button
-                                onClick={() => form.submit()}
-                                type="primary">Login</Button>
-                            <Link to="/">Go to homepage  <ArrowRightOutlined /></Link>
-                        </div>
+                        <Form.Item >
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                            }}>
+                                <Button
+                                    loading={loading}
+                                    type="primary" onClick={() => form.submit()}>
+                                    Login
+                                </Button>
+                                <Link to="/">Go to homepage <ArrowRightOutlined /></Link>
+                            </div>
+                        </Form.Item>
                     </Form>
                     <Divider />
-                    <div style={{ textAlign: "center" }}>Chưa có tài khoản? <Link to={"/register"}>Đăng ký tại đây</Link></div>
+                    <div style={{ textAlign: "center" }}>
+                        Chưa có tài khoản? <Link to={"/register"}>Đăng ký tại đây</Link>
+                    </div>
                 </fieldset>
             </Col>
         </Row>
     )
 }
+
 export default LoginPage;
