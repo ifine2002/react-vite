@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
-import { HomeOutlined, UserOutlined, BookOutlined, SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, BookOutlined, SettingOutlined, LoginOutlined, AliwangwangOutlined } from '@ant-design/icons';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 
@@ -8,9 +8,9 @@ import { AuthContext } from '../context/auth.context';
 const Header = () => {
 
     const [current, setCurrent] = useState("");
-    const data = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    console.log(">>> check user: ", data);
+    console.log(">>> check user: ", user);
 
     const onClick = (e) => {
         // console.log('click ', e);
@@ -32,21 +32,22 @@ const Header = () => {
             key: 'books',
             icon: <BookOutlined />,
         },
-        {
-            label: 'Cài đặt',
+        ...(!user.id ? [{
+            label: <Link to={"/login"}>Đăng nhập</Link>,
+            key: 'login',
+            icon: <LoginOutlined />,
+        }] : []),
+        ...(user.id ? [{
+            label: `Welcome ${user.fullName}`,
             key: 'setting',
-            icon: <SettingOutlined />,
+            icon: <AliwangwangOutlined />,
             children: [
-                {
-                    label: <Link to={"/login"}>Đăng nhập</Link>,
-                    key: 'login',
-                },
                 {
                     label: 'Đăng xuất',
                     key: 'logout',
-                }
-            ]
-        }
+                },
+            ],
+        }] : [])
     ];
 
 
