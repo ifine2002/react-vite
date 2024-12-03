@@ -29,6 +29,11 @@ const fetchAllUserAPI = (current, pageSize) => {
     const URL_BACKEND = `/api/v1/user?current=${current}&pageSize=${pageSize}`;
     return axios.get(URL_BACKEND)
 }
+const fetchAllBookAPI = (current, pageSize) => {
+    const URL_BACKEND = `/api/v1/book?current=${current}&pageSize=${pageSize}`;
+    return axios.get(URL_BACKEND)
+}
+
 
 const handleUploadFile = (file, folder) => {
     const URL_BACKEND = `/api/v1/file/upload`;
@@ -83,5 +88,5 @@ const logoutAPI = () => {
 
 export {
     createUserAPI, updateUserAPI, fetchAllUserAPI, deleteUserAPI, handleUploadFile, updateUserAvatarAPI,
-    registerUserAPI, loginAPI, getAccountAPI, logoutAPI
+    registerUserAPI, loginAPI, getAccountAPI, logoutAPI, fetchAllBookAPI
 }
