@@ -80,7 +80,7 @@ const CreateBookControl = (props) => {
         const file = event.target.files[0];
         console.log(">>> check event: ", event)
         if (file) {
-            setSelectedFile(file);
+            setSelectedFile(file); //String tên file
             setPreview(URL.createObjectURL(file));
         }
     }

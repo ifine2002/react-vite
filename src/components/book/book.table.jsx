@@ -5,6 +5,7 @@ import BookDetail from "./book.detail";
 import BookForm from "./create.book.control";
 import CreateBookControl from "./create.book.control";
 import { fetchAllBookAPI } from "../../services/api.service";
+import CreateBookUnControl from "./create.book.uncontrol";
 
 const BookTable = () => {
 
@@ -151,7 +152,12 @@ const BookTable = () => {
                     onClick={() => setIsCreateOpen(true)}
                 >Create Book</Button>
             </div>
-            <CreateBookControl
+            {/* <CreateBookControl
+                isCreateOpen={isCreateOpen}
+                setIsCreateOpen={setIsCreateOpen}
+                loadBook={loadBook}
+            /> */}
+            <CreateBookUnControl
                 isCreateOpen={isCreateOpen}
                 setIsCreateOpen={setIsCreateOpen}
                 loadBook={loadBook}
