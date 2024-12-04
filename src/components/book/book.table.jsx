@@ -6,6 +6,7 @@ import BookForm from "./create.book.control";
 import CreateBookControl from "./create.book.control";
 import { fetchAllBookAPI } from "../../services/api.service";
 import CreateBookUnControl from "./create.book.uncontrol";
+import UpdateBookControl from "./update.book.control";
 
 const BookTable = () => {
 
@@ -100,8 +101,8 @@ const BookTable = () => {
                 <div style={{ display: "flex", gap: "20px" }}>
                     <EditOutlined
                         onClick={() => {
-                            // setDataUpdate(record);
-                            // setIsModalUpdateOpen(true);
+                            setDataUpdate(record);
+                            setIsModalUpdateOpen(true);
                         }}
                         style={{ cursor: "pointer", color: "orange" }} />
                     <Popconfirm
@@ -181,6 +182,13 @@ const BookTable = () => {
                 setDataDetail={setDataDetail}
                 isDetailOpen={isDetailOpen}
                 setIsDetailOpen={setIsDetailOpen}
+            />
+            <UpdateBookControl
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
+                isModalUpdateOpen={isModalUpdateOpen}
+                setIsModalUpdateOpen={setIsModalUpdateOpen}
+                loadBook={loadBook}
             />
         </>
     )
