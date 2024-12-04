@@ -1,19 +1,47 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Drawer, Popconfirm, Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookDetail from "./book.detail";
+import BookForm from "./create.book.control";
+import CreateBookControl from "./create.book.control";
+import { fetchAllBookAPI } from "../../services/api.service";
 
-const BookTable = (props) => {
+const BookTable = () => {
 
-    const { dataBooks, loadBook, current, pageSize, total, setCurrent, setPageSize } = props;
-
-    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
-    const [dataUpdate, setDataUpdate] = useState(null);
-
+    const [dataBooks, setDataBooks] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(5);
+    const [total, setTotal] = useState(0);
 
     //sử dụng ở book_detail
     const [dataDetail, setDataDetail] = useState(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+    const [dataUpdate, setDataUpdate] = useState(null);
+    const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
+
+    //sử dụng để mở modal create
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+
+    const [loadingTable, setLoadingTable] = useState(false);
+
+
+    //empty array => run once
+    // not empty => next value !== prev value
+    useEffect(() => {
+        loadBook();
+    }, [current, pageSize]);
+
+    const loadBook = async () => {
+        const res = await fetchAllBookAPI(current, pageSize)
+        if (res.data) {
+            setDataBooks(res.data.result);
+            setCurrent(res.data.meta.current);
+            setPageSize(res.data.meta.pageSize);
+            setTotal(res.data.meta.total);
+        }
+
+    }
 
     const columns = [
         {
@@ -118,8 +146,16 @@ const BookTable = (props) => {
                 marginBottom: "10px"
             }}>
                 <h3>Table Book</h3>
-                <Button type="primary">Create Book</Button>
+                <Button
+                    type="primary"
+                    onClick={() => setIsCreateOpen(true)}
+                >Create Book</Button>
             </div>
+            <CreateBookControl
+                isCreateOpen={isCreateOpen}
+                setIsCreateOpen={setIsCreateOpen}
+                loadBook={loadBook}
+            />
             <Table
                 columns={columns}
                 dataSource={dataBooks}
