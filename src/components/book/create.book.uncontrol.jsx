@@ -9,7 +9,10 @@ const CreateBookUnControl = (props) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmitBtn = async (values) => {
+        setLoading(true)
         if (!selectedFile) {
             notification.error({
                 message: "Error create book",
@@ -49,6 +52,7 @@ const CreateBookUnControl = (props) => {
                 description: JSON.stringify(resUpload.message)
             })
         }
+        setLoading(false);
     }
     const resetAndCloseModal = () => {
         form.resetFields();
@@ -76,6 +80,9 @@ const CreateBookUnControl = (props) => {
             title="Create Book (uncontrolled component)"
             open={isCreateOpen}
             onOk={() => form.submit()}
+            okButtonProps={{
+                loading: loading
+            }}
             onCancel={() => { resetAndCloseModal() }}
             maskClosable={false}
             okText={"CREATE"}

@@ -34,6 +34,7 @@ const BookTable = () => {
     }, [current, pageSize]);
 
     const loadBook = async () => {
+        setLoadingTable(true);
         const res = await fetchAllBookAPI(current, pageSize)
         if (res.data) {
             setDataBooks(res.data.result);
@@ -41,7 +42,7 @@ const BookTable = () => {
             setPageSize(res.data.meta.pageSize);
             setTotal(res.data.meta.total);
         }
-
+        setLoadingTable(false);
     }
 
     const columns = [
